@@ -101,6 +101,14 @@ public:
   bool isValid() const { return m_renderer.isValid(); }
 
   /**
+   * Set the distance between the eyes when the widget is in stereo 3D, in
+   * percent of the distance from the camera to the centre of the scene
+   * (default 5). The widget is in stereo when the program asked for stereo
+   * buffers with QSurfaceFormat::setStereo(true) and the platform gives them.
+   */
+  void setStereoSeparation(float percent);
+
+  /**
    * Get the error(s), if any, encountered when setting up the GLWidget.
    * @return A free form string containing errors encountered.
    */

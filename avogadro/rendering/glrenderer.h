@@ -52,6 +52,33 @@ public:
   /** Take care of rendering the scene, requires that the context is current. */
   void render();
 
+  /** The eye render() draws for, in a stereo 3D view. */
+  enum StereoEye
+  {
+    CentreEye, /**< The usual single camera (default). */
+    LeftEye,
+    RightEye
+  };
+
+  /**
+   * Set the eye the next render() draws for. For LeftEye and RightEye the
+   * camera is moved sideways by half the stereo separation (to the left or to
+   * the right) and the projection is sheared so that both eyes meet at the
+   * centre of the scene: what is there has no parallax, nearer parts shift one
+   * way and further parts the other. The scene is the same for both eyes, the
+   * 2D overlay is drawn identically. The camera is the centre camera again
+   * once render() returns, so picking is that of the usual camera.
+   */
+  void setStereoEye(StereoEye eye) { m_stereoEye = eye; }
+  StereoEye stereoEye() const { return m_stereoEye; }
+
+  /**
+   * Set the distance between the eyes in a stereo 3D view, in percent of the
+   * distance from the camera to the centre of the scene (default 5).
+   */
+  void setStereoSeparation(float percent) { m_stereoSeparation = percent; }
+  float stereoSeparation() const { return m_stereoSeparation; }
+
   /** Reset the view to fit the entire scene. */
   void resetCamera();
 
@@ -159,6 +186,9 @@ private:
 
   Vector3f m_center;
   float m_radius;
+
+  StereoEye m_stereoEye = CentreEye;
+  float m_stereoSeparation = 5.0f;
 };
 
 inline const Camera& GLRenderer::camera() const

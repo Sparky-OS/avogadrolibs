@@ -19,6 +19,7 @@
 #include <QtCore/QTimer>
 #include <QtGui/QKeyEvent>
 #include <QtGui/QMouseEvent>
+#include <QtGui/QOpenGLContext>
 #include <QtGui/QWheelEvent>
 #include <QtGui/QWindow>
 #include <QtWidgets/QApplication>
@@ -241,7 +242,23 @@ void GLWidget::resizeGL(int width_, int height_)
 
 void GLWidget::paintGL()
 {
+  // With stereo buffers (QSurfaceFormat::setStereo(true), asked by the program)
+  // QOpenGLWidget calls paintGL() once for the left and once for the right
+  // buffer.
+  if (context()->format().stereo() && m_renderer.stereoSeparation() > 0.0f) {
+    m_renderer.setStereoEye(currentTargetBuffer() == QOpenGLWidget::RightBuffer
+                              ? Rendering::GLRenderer::RightEye
+                              : Rendering::GLRenderer::LeftEye);
+  } else {
+    m_renderer.setStereoEye(Rendering::GLRenderer::CentreEye);
+  }
   m_renderer.render();
+}
+
+void GLWidget::setStereoSeparation(float percent)
+{
+  m_renderer.setStereoSeparation(percent);
+  update();
 }
 
 void GLWidget::mouseDoubleClickEvent(QMouseEvent* e)

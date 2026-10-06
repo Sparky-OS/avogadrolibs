@@ -18,6 +18,7 @@
 
 #include <avogadro/core/matrix.h>
 
+#include <cmath>
 #include <iostream>
 
 namespace Avogadro::Rendering {
@@ -97,6 +98,25 @@ void GLRenderer::render()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   applyProjection();
 
+  // Stereo 3D: the projection of the eye, the centre camera's is put back
+  // below.
+  const Eigen::Affine3f centreProjection = m_camera.projection();
+  if (m_stereoEye != CentreEye) {
+    // Two parallel cameras, e to the left or to the right of the usual one,
+    // meeting at the depth d of the centre of the scene: a point (x, y, z) in
+    // eye coordinates is seen at x - e - e * z / d. The model view is
+    // untouched.
+    const float d = std::abs((m_camera.modelView() * m_center).z());
+    const float e = (m_stereoEye == RightEye ? 0.5f : -0.5f) * d *
+                    m_stereoSeparation / 100.0f;
+    Eigen::Matrix4f shear = Eigen::Matrix4f::Identity();
+    shear(0, 2) = -e / d;
+    shear(0, 3) = -e;
+    Eigen::Affine3f eyeProjection;
+    eyeProjection.matrix() = centreProjection.matrix() * shear;
+    m_camera.setProjection(eyeProjection);
+  }
+
   GLRenderVisitor visitor(m_camera, m_textRenderStrategy);
   // Setup for solid geometry
   // m_volume.begin()
@@ -136,6 +156,8 @@ void GLRenderer::render()
   visitor.setCamera(m_overlayCamera);
   glDisable(GL_DEPTH_TEST);
   m_scene.rootNode().accept(visitor);
+
+  m_camera.setProjection(centreProjection);
 
 #ifdef _3DCONNEXION
   if (m_drawIcon && (m_iconData != nullptr)) {
