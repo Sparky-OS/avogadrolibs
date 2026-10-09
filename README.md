@@ -1,3 +1,27 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset=".github/sparky-stereo-os/sparkyos-swirl-light-128.png">
+  <img src=".github/sparky-stereo-os/sparkyos-swirl-dark-128.png" alt="SparkyOS" width="128" height="128">
+</picture>
+
+## Sparky Stereo OS
+
+This is the stereo version of Avogadro 2 by Sparky Stereo OS, forked from [OpenChemistry/avogadrolibs](https://github.com/OpenChemistry/avogadrolibs).
+It adds a stereo 3D view to the OpenGL widget and renderer.
+
+Where it comes from:
+
+- [Avogadro](https://avogadro.cc/) is developed by an open community as part of the [Open Chemistry](https://openchemistry.org/) project, which was started at Kitware. Its authors include Marcus Hanwell and Geoffrey Hutchison; see [CITATION.cff](CITATION.cff).
+- [Debian](https://www.debian.org/) is the base of the system.
+- [SparkyLinux](https://sparkylinux.org/), by Paweł "pavroo" Pijanowski, builds on Debian.
+- [Sparky Stereo OS](https://github.com/Sparky-OS/sparky-stereo-os) is the stereo 3D edition of SparkyLinux: SparkyOS, powered by Debian.
+
+The `stereo3d` branch holds the version the distribution builds.
+The licence is unchanged; see [LICENSE](LICENSE).
+
+Sparky Stereo OS, Daniel Ramos's edition of SparkyLinux (by Paweł "pavroo" Pijanowski).
+
+---
+
 # ![Avogadro 2][Avogadro2Logo] Avogadro 2
 
 [![Latest Release](https://img.shields.io/github/v/release/openchemistry/avogadrolibs)](https://github.com/OpenChemistry/avogadrolibs/releases) [![BSD License](https://img.shields.io/github/license/openchemistry/avogadrolibs)](https://github.com/OpenChemistry/avogadrolibs/blob/master/LICENSE) [![Codacy Badge](https://app.codacy.com/project/badge/Grade/44bb12662c564ed8a27ee8a7fd89ed50)](https://app.codacy.com/gh/OpenChemistry/avogadrolibs/dashboard?utm_source=gh&utm_medium=referral&utm_content=&utm_campaign=Badge_grade)
